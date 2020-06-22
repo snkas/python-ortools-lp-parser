@@ -1,0 +1,11 @@
+*.iml
+.idea/
+dist/
+*.egg-info
+*.pyc
+program.lp
+python-ortools-lp-parser.tar.gz
+temp/
+.coverage
+htmlcov/
+!example/program.lp
