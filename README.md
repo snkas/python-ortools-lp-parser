@@ -1,6 +1,6 @@
 # Python OR-Tools LP Parser
 
-[![Build Status](https://travis-ci.org/snkas/python-ortools-lp-parser.svg?branch=master)](https://travis-ci.org/snkas/python-ortools-lp-parser) [![codecov](https://codecov.io/gh/snkas/python-ortools-lp-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/snkas/python-ortools-lp-parser)
+[![Build Status](https://travis-ci.com/snkas/python-ortools-lp-parser.svg?branch=master)](https://travis-ci.com/snkas/python-ortools-lp-parser) [![codecov](https://codecov.io/gh/snkas/python-ortools-lp-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/snkas/python-ortools-lp-parser)
 
 It is remarkable that the or-tools open source project (https://developers.google.com/optimization/) enables a decent linear solver to be included in Python via `pip` without manual compilation. The Python wrapper of the or-tools optimization API (i.e. `pip install ortools`) unfortunately does not support the reading of linear program files. This small module is to enable Python developers to read in LP formatted linear program files.
 
