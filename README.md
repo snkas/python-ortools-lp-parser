@@ -37,7 +37,7 @@ The format accepted by this parser is different in the following ways:
 **Option 1**
 
 ```bash
-python3 -m pip install git+https://github.com/snkas/python-ortools-lp-parser
+python3 -m pip install git+https://github.com/snkas/python-ortools-lp-parser@v1.5.1
 ```
 
 You can now include it using: `import ortoolslpparser`

@@ -18,7 +18,7 @@ from distutils.core import setup
 
 setup(
     name='ortoolslpparser',
-    version='1.5.0',
+    version='1.5.1',
     description='Python OR-Tools LP Parser (fan-written)',
     license='Apache 2.0',
     python_requires='>=3.7',
