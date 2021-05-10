@@ -469,8 +469,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Unexpected next character \"|\" on line 1 "
+                                        "(expected whitespace or combination sign character).")
 
     def test_forgot_semicolon_objective(self):
 
@@ -485,8 +486,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Line 1 does not end with a semi-colon.")
 
     def test_no_var_in_coefficients(self):
 
@@ -501,8 +502,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Not a single variable present in the coefficients on line 3.")
 
     def test_forgot_semicolon_constraint(self):
 
@@ -517,8 +518,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Line 5 does not end with a semi-colon.")
 
     def test_multi_equal(self):
 
@@ -533,8 +534,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Too many (in)equality signs present for constraint on line 2.")
 
     def test_bad_right_hand_side_leq(self):
 
@@ -549,8 +550,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Right hand side (\" 30.44.44\") of inequality constraint on line 3 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_bad_right_hand_side_geq(self):
 
@@ -565,8 +567,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Right hand side (\" 30.44.44\") of inequality constraint on line 3 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_bad_right_hand_side_leq_leq(self):
 
@@ -580,8 +583,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Right hand side (\" 30.44.44\") of inequality constraint on line 2 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_bad_left_hand_side_leq_leq(self):
 
@@ -595,8 +599,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Left hand side (\"2.7.7 \") of inequality constraint on line 2 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_bad_right_hand_side_geq_geq(self):
 
@@ -610,8 +615,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Right hand side (\" 2.68.5\") of inequality constraint on line 2 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_bad_left_hand_side_geq_geq(self):
 
@@ -625,8 +631,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Left hand side (\"30.4.4a \") of inequality constraint on line 2 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_semicolon_only(self):
 
@@ -642,8 +649,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Line 6 ends with semi-colon but is empty otherwise.")
 
     def test_double_semicolon(self):
 
@@ -658,8 +665,12 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(
+                e.args[0],
+                "Right hand side (\" 50;\") of inequality constraint on line 5 is not a float "
+                "(e.g., variables are not allowed there!)."
+            )
 
     def test_invalid_goal(self):
 
@@ -674,8 +685,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Objective function on line 1 must start with \"max:\" or \"min:\".")
 
     def test_no_variables(self):
 
@@ -690,8 +701,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "No variables present in equation on line 3.")
 
     def test_no_inequality(self):
 
@@ -706,10 +717,10 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "No (in)equality sign present for constraint on line 5.")
 
-    def test_strange_declaration(self):
+    def test_declaration_of_sos_not_supported_first(self):
 
         write_lp_program([
             "max: x1 + x2;",
@@ -724,10 +735,10 @@ class TestInvalid(unittest.TestCase):
                 use_solver=pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING
             )
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "No (in)equality sign present for constraint on line 4.")
 
-    def test_strange_declaration_second(self):
+    def test_declaration_of_sos_not_supported_second(self):
 
         write_lp_program([
             "max: x1 + x2;",
@@ -743,8 +754,8 @@ class TestInvalid(unittest.TestCase):
                 use_solver=pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING
             )
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Declaration on line 5 should start with \"int \".")
 
     def test_empty_int_vars(self):
 
@@ -761,8 +772,8 @@ class TestInvalid(unittest.TestCase):
                 use_solver=pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING
             )
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Declaration on line 4 has no variables.")
 
     def test_bad_coefficient(self):
 
@@ -777,8 +788,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Unexpected next character \".\" on line 1 "
+                                        "(expected whitespace or combination sign character).")
 
     def test_trailing_stuff(self):
 
@@ -793,8 +805,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Cannot process remainder coefficients of \"\" on line 1.")
 
     def test_multiple_eq(self):
 
@@ -810,8 +822,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Equality constraint on line 4 has multiple equal signs.")
 
     def test_bad_right_hand_side_eq(self):
 
@@ -827,8 +839,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Right hand side (\" 29.3agd\") of equality constraint on line 4 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_invalid_coefficient_char(self):
 
@@ -843,8 +856,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Unexpected next character \"|\" on line 1 "
+                                        "(expected whitespace or combination sign character).")
 
     def test_int_invalid_var_name(self):
 
@@ -861,8 +875,8 @@ class TestInvalid(unittest.TestCase):
                 use_solver=pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING
             )
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Non-permitted variable name (\"ajd|bqx1\") on line 4.")
 
     def test_int_invalid_var_name_start(self):
 
@@ -879,8 +893,8 @@ class TestInvalid(unittest.TestCase):
                 use_solver=pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING
             )
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Non-permitted variable name (\"4inv1\") on line 4.")
 
     def test_int_none_only_comma(self):
 
@@ -897,8 +911,8 @@ class TestInvalid(unittest.TestCase):
                 use_solver=pywraplp.Solver.CBC_MIXED_INTEGER_PROGRAMMING
             )
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Non-permitted variable name (\"\") on line 4.")
 
     def test_fail_multi_line_comment(self):
 
@@ -912,8 +926,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Right hand side (\" 0.0;*/\") of inequality constraint on line 2 is not a "
+                                        "float (e.g., variables are not allowed there!).")
 
     def test_sign_detached(self):
 
@@ -927,8 +942,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Cannot process remainder coefficients of \" x2\" on line 1.")
 
     def test_triple_sign(self):
 
@@ -942,8 +957,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Cannot process remainder coefficients of \"+x2\" on line 1.")
 
     def test_no_objective(self):
 
@@ -958,8 +973,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Objective function on line 1 must start with \"max:\" or \"min:\".")
 
     def test_example_mixed_integer(self):
 
@@ -994,8 +1009,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Variable \"x1\" found more than once on line 1.")
 
     def test_twice_same_var_constraint(self):
 
@@ -1009,8 +1024,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Variable \"x1\" found more than once on line 2.")
 
     def test_twice_declaration(self):
 
@@ -1026,8 +1041,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Variable \"x1\" declared again on line 6.")
 
     def test_twice_declaration_same_line(self):
 
@@ -1043,8 +1058,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Variable \"x1\" declared again on line 6.")
 
     def test_invalid_var_name_objective_function(self):
 
@@ -1059,8 +1074,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Unexpected next character \"^\" on line 1 "
+                                        "(expected whitespace or combination sign character).")
 
     def test_invalid_var_name_constraint(self):
 
@@ -1076,8 +1092,9 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Unexpected next character \"$\" on line 6 "
+                                        "(expected whitespace or combination sign character).")
 
     def test_invalid_var_name_start_underscore(self):
 
@@ -1093,8 +1110,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Cannot process remainder coefficients of \"_x3\" on line 6.")
 
     def test_invalid_var_name_declarations(self):
 
@@ -1110,8 +1127,8 @@ class TestInvalid(unittest.TestCase):
         try:
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
-        except ValueError:
-            self.assertTrue(True)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Non-permitted variable name (\"x3^\") on line 6.")
 
     def test_no_whitespace_after_variable(self):
 
@@ -1125,8 +1142,8 @@ class TestInvalid(unittest.TestCase):
             ortoolslpparser.parse_lp_file(TEMP_FILE)
             self.assertTrue(False)
         except ValueError as e:
-            self.assertEqual(e.args[0], "Whitespace or combination sign is missing on line 3.")
-            self.assertTrue(True)
+            self.assertEqual(e.args[0], "Unexpected next character \"|\" on line 3 "
+                                        "(expected whitespace or combination sign character).")
 
     def test_improve_var_bounds_no_single_var_name_match(self):
 

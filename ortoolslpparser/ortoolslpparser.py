@@ -156,11 +156,14 @@ def _set_coefficients(solver: pywraplp.Solver, objective_or_constraint, coeffici
             running_constant_sum += coefficient
 
         # At the end of each element there either:
-        # (a) Must be white space (e.g., x1 x2 <= 10)
-        # (b) The next sign (e.g., x1+x2 <= 10)
+        # (a) Must be whitespace (e.g., x1 x2 <= 10)
+        # (b) The next combination sign (e.g., x1+x2 <= 10)
         # (c) Or it was the last one, as such remainder is empty (e.g., x1 <= 10)
         if len(remainder) != 0 and not whitespace_after and remainder[0:1] != "-" and remainder[0:1] != "+":
-            raise ValueError("Whitespace or combination sign is missing on line %d." % line_nr)
+            raise ValueError(
+                "Unexpected next character \"%s\" on line %d (expected whitespace or "
+                "combination sign character)." % (remainder[0:1], line_nr)
+            )
 
     # There must have been at least one variable
     if not had_at_least_one_variable:
