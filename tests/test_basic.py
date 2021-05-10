@@ -1112,3 +1112,34 @@ class TestInvalid(unittest.TestCase):
             self.assertTrue(False)
         except ValueError:
             self.assertTrue(True)
+
+    def test_no_whitespace_after_variable(self):
+
+        write_lp_program([
+            "max: x1 + x2;",
+            "x1 = 30;",
+            "x1|x2 <= 99.2;"
+        ])
+
+        try:
+            ortoolslpparser.parse_lp_file(TEMP_FILE)
+            self.assertTrue(False)
+        except ValueError as e:
+            self.assertEqual(e.args[0], "Whitespace or combination sign is missing on line 3.")
+            self.assertTrue(True)
+
+    def test_improve_var_bounds_no_single_var_name_match(self):
+
+        write_lp_program([
+            "max: x1 + x2;",
+            "20 <= x1 + x2 <= 30;",
+            "10 <= x1 <= 10;",
+        ])
+
+        solver = ortoolslpparser.parse_lp_file(TEMP_FILE)["solver"]
+        status = solver.Solve()
+        self.assertEqual(status, solver.OPTIMAL)
+
+        self.assertAlmostEqual(solver.LookupVariable("x1").solution_value(), 10.0)
+        self.assertAlmostEqual(solver.LookupVariable("x2").solution_value(), 20.0)
+        self.assertAlmostEqual(solver.Objective().Value(), 30.0)

@@ -9,3 +9,4 @@ temp/
 .coverage
 htmlcov/
 !example/program.lp
+coverage.xml

@@ -108,7 +108,7 @@ def _set_coefficients(solver: pywraplp.Solver, objective_or_constraint, coeffici
         if sign_match is not None:
             if sign_match.group() == "-":
                 coefficient = coefficient * -1.0
-            remainder = remainder[1:]
+            remainder = remainder[1:]  # There is no strip() here, as it must be directly in front of the mantissa
 
         # Mantissa and exponent
         mantissa_exp_match = re.search(r"^(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?", remainder)
@@ -142,7 +142,8 @@ def _set_coefficients(solver: pywraplp.Solver, objective_or_constraint, coeffici
             objective_or_constraint.SetCoefficient(solver_var, coefficient)
 
             # Strip what we matched
-            stripped_remainder = remainder[var_name_match.span()[1]:].strip()
+            remainder = remainder[var_name_match.span()[1]:]
+            stripped_remainder = remainder.strip()
             whitespace_after = False
             if len(remainder) != len(stripped_remainder):
                 whitespace_after = True
@@ -154,7 +155,10 @@ def _set_coefficients(solver: pywraplp.Solver, objective_or_constraint, coeffici
         else:
             running_constant_sum += coefficient
 
-        # At the end of each element there must be white space or the next sign, or it was the last one
+        # At the end of each element there either:
+        # (a) Must be white space (e.g., x1 x2 <= 10)
+        # (b) The next sign (e.g., x1+x2 <= 10)
+        # (c) Or it was the last one, as such remainder is empty (e.g., x1 <= 10)
         if len(remainder) != 0 and not whitespace_after and remainder[0:1] != "-" and remainder[0:1] != "+":
             raise ValueError("Whitespace or combination sign is missing on line %d." % line_nr)
 
@@ -347,7 +351,6 @@ def _set_objective_function_and_constraints(solver: pywraplp.Solver, lp_filename
 
         line_nr = 0
         in_objective_function = True
-        in_constraints = False
         for line in lp_file:
             line_nr += 1
 
@@ -361,13 +364,14 @@ def _set_objective_function_and_constraints(solver: pywraplp.Solver, lp_filename
             # The first non-empty core line must be the objective function
             if in_objective_function:
                 _parse_objective_function(solver, core_line, line_nr, var_names)
-                in_objective_function = False
-                in_constraints = True
+                in_objective_function = False  # As such, next line we are in the constraints
 
+            # If we are not in objective function, we are in the constraints section
             # Go over until we hit a line without colon and starting with "int<whitespace>"
-            elif in_constraints:
+            # (which would indicate the end of the constraint section)
+            else:
                 if core_line.find(":") == -1 and core_line.split()[0] == "int":
-                    break
+                    break  # The declaration section is not used in this function, so exit
                 else:
                     _parse_constraint(solver, core_line, line_nr, var_names)
 

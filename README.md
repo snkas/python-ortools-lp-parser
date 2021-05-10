@@ -1,12 +1,22 @@
 # Python OR-Tools LP Parser
 
-[![Build Status](https://travis-ci.com/snkas/python-ortools-lp-parser.svg?branch=master)](https://travis-ci.com/snkas/python-ortools-lp-parser) [![codecov](https://codecov.io/gh/snkas/python-ortools-lp-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/snkas/python-ortools-lp-parser)
+[![build](https://github.com/snkas/python-ortools-lp-parser/workflows/build/badge.svg)](https://github.com/snkas/python-ortools-lp-parser/actions?query=workflow%3Abuild+branch%3Amaster)
+[![codecov](https://codecov.io/gh/snkas/python-ortools-lp-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/snkas/python-ortools-lp-parser) 
+[![license: Apache](https://img.shields.io/badge/license-Apache%202.0-blue)](https://github.com/snkas/python-ortools-lp-parser/blob/master/LICENSE)
+[![GitHub release version](https://img.shields.io/github/v/release/snkas/python-ortools-lp-parser)](https://github.com/snkas/python-ortools-lp-parser/releases)
 
-It is remarkable that the or-tools open source project (https://developers.google.com/optimization/) enables a decent linear solver to be included in Python via `pip` without manual compilation. The Python wrapper of the or-tools optimization API (i.e. `pip install ortools`) unfortunately does not support the reading of linear program files. This small module is to enable Python developers to read in LP formatted linear program files.
+It is remarkable that the or-tools open source project (https://developers.google.com/optimization/) 
+enables a decent linear solver to be included in Python via `pip` without manual compilation. 
+The Python wrapper of the or-tools optimization API (i.e. `python3 -m pip install ortools`) unfortunately 
+does not support the reading of linear program files. This small module is to enable Python 
+developers to read in LP formatted linear program files.
 
-**This fan-written LP parser is NOT IN ANY WAY affiliated with or endorsed by the or-tools developers. This parser is distributed on an "as is" basis, without warranties or conditions of any kind (see also the Apache 2.0 License in ./LICENSE).**
+**This fan-written LP parser is NOT IN ANY WAY affiliated with or endorsed by the or-tools developers.
+This parser is distributed on an "as is" basis, without warranties or conditions of any kind
+(see also the Apache 2.0 License in ./LICENSE).**
 
-It aims to follow the LPSolve 5.1 LP format (http://lpsolve.sourceforge.net/5.1/lp-format.htm). The format accepted by this parser is different in the following ways:
+It aims to follow the LPSolve 5.1 LP format (http://lpsolve.sourceforge.net/5.1/lp-format.htm).
+The format accepted by this parser is different in the following ways:
 
 1. An objective function / constraint / declaration must be on a single line terminated by a semicolon (;)
 2. Multi-line comments are not allowed
@@ -21,13 +31,13 @@ It aims to follow the LPSolve 5.1 LP format (http://lpsolve.sourceforge.net/5.1/
 ## Installation
 
 **Requirements**
-* Python 3.5+
-* `pip install ortools`
+* Python 3.7+
+* `python3 -m pip install ortools`
 
 **Option 1**
 
 ```bash
-$ pip install git+https://github.com/snkas/python-ortools-lp-parser
+python3 -m pip install git+https://github.com/snkas/python-ortools-lp-parser
 ```
 
 You can now include it using: `import ortoolslpparser`
@@ -37,7 +47,8 @@ You can now include it using: `import ortoolslpparser`
 Clone/download this Git repository. Then, execute the following to install the package locally:
 
 ```bash
-$ bash install_local.sh
+cd python-ortools-lp-parser
+python3 -m pip install .
 ```
 
 You can now include it using: `import ortoolslpparser`
@@ -75,23 +86,26 @@ Variable x1: 30.600000
 Variable x2: 24.900000
 ```
 
-## Testing
+## Development
 
-Run all tests (local version):
+**Run tests:**
 ```bash
-$ python -m pytest
+python3 -m pip install pytest
+python3 -m pytest
 ```
 
-Run all tests (global pip-installed version):
+**Calculate coverage (outputs `.coverage`, `coverage.xml` and `htmlcov/`):**
 ```bash
-$ pytest
-```
-
-Calculate coverage locally (output in `htmlcov/`):
-```bash
-$ bash calculate_coverage.sh
+python3 -m pip install coverage
+python3 -m coverage run --branch --include="ortoolslpparser/*" -m pytest
+python3 -m coverage xml
+python3 -m coverage html
 ```
 
 ## General advice
 
-* **Declare the tightest bounds possible.** The default type of a variable is a floating point number in the range (-inf, inf). Make sure that you declare for each variable as tight bounds as possible: this can help the solver. In particular, if you know a certain variable `x` is a non-negative number, add a `x >= 0;` constraint to limit the range to [0, inf). The Glop solver tends to not be as good at solving (-inf, inf)-bounded variables: in some instances it declares the program as ABNORMAL.
+* **Declare the tightest bounds possible.** The default type of a variable is a floating point
+  number in the range (-inf, inf). Make sure that you declare for each variable as tight bounds
+  as possible: this can help the solver. In particular, if you know a certain variable `x` is a
+  non-negative number, add a `x >= 0;` constraint to limit the range to [0, inf). The Glop solver
+  tends to not be as fast at solving (-inf, inf)-bounded variables.

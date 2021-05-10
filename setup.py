@@ -18,12 +18,20 @@ from distutils.core import setup
 
 setup(
     name='ortoolslpparser',
-    version='1.4',
-    description="Python OR-Tools LP Parser (fan-written)",
-    license="Apache 2.0",
-    python_requires='>=3.5',
-    author="snkas",
-    url="https://github.com/snkas/python-ortools-lp-parser",
+    version='1.5.0',
+    description='Python OR-Tools LP Parser (fan-written)',
+    license='Apache 2.0',
+    python_requires='>=3.7',
+    author='snkas',
+    author_email='snkasdev+ortoolslpparser@gmail.com',
+    url='https://github.com/snkas/python-ortools-lp-parser',
     packages=['ortoolslpparser'],
-    requires=['ortools']
+    requires=['ortools'],
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Programming Language :: Python :: 3 :: Only',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: OS Independent'
+    ]
 )
