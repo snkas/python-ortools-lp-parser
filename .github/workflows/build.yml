@@ -31,7 +31,7 @@ jobs:
 
       - name: Install Python module development requirements
         run: |
-          python3 -m pip install coverage
+          python3 -m pip install pytest coverage
 
       - name: Install
         run: |
