@@ -1,4 +1,4 @@
-# Python OR-Tools LP Parser
+# Fan-written Python LP Parser for OR-Tools
 
 [![build](https://github.com/snkas/python-ortools-lp-parser/workflows/build/badge.svg)](https://github.com/snkas/python-ortools-lp-parser/actions?query=workflow%3Abuild+branch%3Amaster)
 [![codecov](https://codecov.io/gh/snkas/python-ortools-lp-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/snkas/python-ortools-lp-parser) 
